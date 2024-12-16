@@ -1,0 +1,21 @@
+﻿<projectDescription>
+	<id>1238637846607</id>
+	<name>~Loader2</name>
+	<asVersion>0</asVersion>
+	<boundTemplate>file:///C|/Users/Leave/AppData/Local/Adobe/Flash CS4/en/Configuration/Project/templates/boundClass_as3.as</boundTemplate>
+	<classTemplate>file:///C|/Users/Leave/AppData/Local/Adobe/Flash CS4/en/Configuration/Project/templates/standardClass_as3.as</classTemplate>
+	<classPath>.</classPath>
+	<rootURI>C:\Users\Leave\AppData\Local\Temp\4</rootURI>
+	<flexSDK/>
+	<sources editable="false"/>
+	<libraries editable="false"/>
+	<externalLibraries editable="false"/>
+	<compileList editable="false">
+		<uri label="~Loader2.fla">file:///C|/Users/Leave/AppData/Local/Temp/4/~Loader2.fla</uri>
+	</compileList>
+	<defaultApp>file:///C|/Users/Leave/AppData/Local/Temp/4/~Loader2.fla</defaultApp>
+	<recentFiles editable="false">
+		<uri label="MainTimeline.as">file:///C|/Users/Leave/AppData/Local/Temp/4/Loader_Spider_fla/MainTimeline.as</uri>
+	</recentFiles>
+	<locations editable="false"/>
+</projectDescription>
