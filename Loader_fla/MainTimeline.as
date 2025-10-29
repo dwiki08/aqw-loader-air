@@ -71,7 +71,8 @@
 			this.loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, this.OnProgress);
 			this.loader.contentLoaderInfo.addEventListener(Event.COMPLETE, this.OnComplete);
 			// this.loader.load(new URLRequest(this.sURL + "gamefiles/" + this.sFile), loaderContext);
-			this.loader.load(new URLRequest("app:/gamefiles/Game3089.swf"), loaderContext);
+			// this.loader.load(new URLRequest("gamefiles/Game3091.swf"), loaderContext);
+			this.loader.load(new URLRequest("app:/gamefiles/Game3091.swf"), loaderContext);
 			this.mcLoading.strLoad.text = "Loading 0%";
 		}
 
@@ -104,6 +105,7 @@
 		private function getTextBox(): String 
 		{
 			var text: String = "";
+			if (Game.ui == null) return text;
 			if (Game.ui.mcInterface.ncText != null) text = Game.ui.mcInterface.ncText.text;
 			if (Game.ui.mcInterface.te != null) text = Game.ui.mcInterface.te.text;
 			return text;

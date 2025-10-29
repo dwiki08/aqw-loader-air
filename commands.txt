@@ -1,0 +1,14 @@
+Write this in chat box to active, its using keyboard event to toggling commands
+
+1. First, write this in front	/.
+
+2. Then, use the following chars to toggle command
+Auto Attack	=	a
+Leave Combat	=	x
+Open Bank	=	b
+Walkspeed	= 	w
+Lag Killer	= 	l
+
+Example:
+/.a = active Auto Attack
+/.aa = deactive Auto Attack
