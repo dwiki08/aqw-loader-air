@@ -10,7 +10,7 @@
 
 	dynamic public class MainTimeline extends MovieClip
 	{
-	  	public static var Game:Object;
+		public static var Game:Object;
 		public var mcLoading:MovieClip;
 		public var sFile:String;
 		public var sTitle:String;
@@ -18,18 +18,18 @@
 		public var sURL:String = "https://game.aq.com/game/";
 		public var LoginURL:String = this.sURL + "api/login/now";
 		public var versionURL:String = this.sURL + "api/data/gameversion";
-	  	public var urlLoader:URLLoader;
+		public var urlLoader:URLLoader;
 		public var loaderVars:Object;
-	 	public var loader:Loader;
+		public var loader:Loader;
 
 		{
 			MovieClip.prototype.removeAllChildren = function():void
 			{
 				var c:* = this.numChildren - 1;
-				while(c >= 0)
+				while (c >= 0)
 				{
-				this.removeChildAt(c);
-				c--;
+					this.removeChildAt(c);
+					c--;
 				}
 			};
 		}
@@ -37,24 +37,28 @@
 		public function MainTimeline()
 		{
 			super();
-			addEventListener(Event.ADDED_TO_STAGE,this.OnAddedToStage);
+			addEventListener(Event.ADDED_TO_STAGE, this.OnAddedToStage);
 		}
 
-		private function OnAddedToStage(event:Event) : void
+		private function OnAddedToStage(event:Event):void
 		{
-			removeEventListener(Event.ADDED_TO_STAGE,this.OnAddedToStage);
-			try {
+			removeEventListener(Event.ADDED_TO_STAGE, this.OnAddedToStage);
+			try
+			{
 				Security.allowDomain("*");
-			} catch (e) { };
+			}
+			catch (e)
+			{
+			};
 			this.urlLoader = new URLLoader();
-			this.urlLoader.addEventListener(Event.COMPLETE,this.OnDataComplete);
+			this.urlLoader.addEventListener(Event.COMPLETE, this.OnDataComplete);
 			this.urlLoader.load(new URLRequest(this.versionURL));
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, this.onKeyboardDown);
 		}
 
-		public function OnDataComplete(event:Event) : void
+		public function OnDataComplete(event:Event):void
 		{
-			this.urlLoader.removeEventListener(Event.COMPLETE,this.OnDataComplete);
+			this.urlLoader.removeEventListener(Event.COMPLETE, this.OnDataComplete);
 			var vars:Object = JSON.parse(event.target.data);
 			this.sFile = vars.sFile;
 			this.sTitle = vars.sTitle;
@@ -63,9 +67,9 @@
 			this.LoadGame();
 		}
 
-		public function LoadGame() : void
+		public function LoadGame():void
 		{
-			loaderContext = new LoaderContext(false,new ApplicationDomain(null));
+			loaderContext = new LoaderContext(false, new ApplicationDomain(null));
 			loaderContext.allowCodeImport = true;
 			this.loader = new Loader();
 			this.loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, this.OnProgress);
@@ -76,73 +80,77 @@
 			this.mcLoading.strLoad.text = "Loading 0%";
 		}
 
-		public function OnProgress(event:ProgressEvent) : void
+		public function OnProgress(event:ProgressEvent):void
 		{
 			var progress:* = event.currentTarget.bytesLoaded / event.currentTarget.bytesTotal * 100;
 			this.mcLoading.strLoad.text = "Loading " + progress + "%";
 		}
 
-		public function OnComplete(event:Event) : void
+		public function OnComplete(event:Event):void
 		{
 			var param:* = undefined;
 			this.loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, this.OnProgress);
 			this.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, this.OnComplete);
-		 	this.stg = stage;
+			this.stg = stage;
 			this.stg.removeChildAt(0);
-			Game = this.stg.addChildAt(event.currentTarget.content, 0);			
-			for(param in root.loaderInfo.parameters)
+			Game = this.stg.addChildAt(event.currentTarget.content, 0);
+			for (param in root.loaderInfo.parameters)
 			{
-			   Game.params[param] = root.loaderInfo.parameters[param];
+				Game.params[param] = root.loaderInfo.parameters[param];
 			}
 			Game.params.sURL = this.sURL;
 			Game.params.sBG = this.sBG;
 			Game.params.sTitle = this.sTitle;
-			Game.params.loginURL = this.LoginURL;		
-			Game.loginLoader.addEventListener(Event.COMPLETE, this.OnLoginComplete);	
+			Game.params.loginURL = this.LoginURL;
+			Game.loginLoader.addEventListener(Event.COMPLETE, this.OnLoginComplete);
 			this.stg.addEventListener(KeyboardEvent.KEY_DOWN, this.onKeyboardDown);
 		}
 
-		private function getTextBox(): String 
+		private function getTextBox():String
 		{
-			var text: String = "";
-			if (Game.ui == null) return text;
-			if (Game.ui.mcInterface.ncText != null) text = Game.ui.mcInterface.ncText.text;
-			if (Game.ui.mcInterface.te != null) text = Game.ui.mcInterface.te.text;
+			var text:String = "";
+			if (Game.ui == null)
+				return text;
+			if (Game.ui.mcInterface.ncText != null)
+				text = Game.ui.mcInterface.ncText.text;
+			if (Game.ui.mcInterface.te != null)
+				text = Game.ui.mcInterface.te.text;
 			return text;
 		}
 
-		private function OnLoginComplete(event:Event) : void
+		private function OnLoginComplete(event:Event):void
 		{
 			var vars:Object = JSON.parse(event.target.data);
 			vars.login.iUpg = 10;
 			vars.login.iUpgDays = 999;
-			for (var s in vars.servers) 
+			for (var s in vars.servers)
 			{
 				vars.servers[s].sName = vars.servers[s].sName;
 			}
 			trace("res: " + JSON.stringify(vars));
 			event.target.data = JSON.stringify(vars);
 		}
-		
-		private function IsLoggedIn() : Boolean
+
+		private function IsLoggedIn():Boolean
 		{
 			return Game != null && Game.sfc != null && Game.sfc.isConnected == true;
 		}
-		
-		private function IsPlayerAlive() : Boolean 
+
+		private function IsPlayerAlive():Boolean
 		{
 			return Game.world.myAvatar.dataLeaf.intHP > 0;
 		}
-		
+
 		private function SendMessage(text:String)
 		{
-			Game.chatF.pushMsg("server", text,"SERVER","",0);
+			Game.chatF.pushMsg("server", text, "SERVER", "", 0);
 		}
-		
-		private function onKeyboardDown(event:KeyboardEvent) : void
+
+		private function onKeyboardDown(event:KeyboardEvent):void
 		{
-			trace("text: " + this.getTextBox())
-			if (!IsLoggedIn() || this.getTextBox().substr(0, 2) != "/.") return;
+			trace("text: " + this.getTextBox());
+			if (!IsLoggedIn() || this.getTextBox().substr(0, 2) != "/.")
+				return;
 			switch (event.keyCode)
 			{
 				case Keyboard.A:
@@ -158,7 +166,7 @@
 					break;
 
 				case Keyboard.W:
-					if (Game.world.WALKSPEED == 8) 
+					if (Game.world.WALKSPEED == 8)
 					{
 						this.SendMessage("[WalkSpeed] 2x Speed");
 						Game.world.WALKSPEED = 16;
@@ -176,18 +184,17 @@
 			}
 		}
 
-		
 		private var isBotting:Boolean = false;
 		private var botTimer:Timer = new Timer(100); // in ms
 		private var skillDelay:int = 0;
 		private var skillIndex:int = 0;
-		
-		private function ToggleAutoBattling() : Boolean
+
+		private function ToggleAutoBattling():Boolean
 		{
 			this.isBotting = !this.isBotting;
-			if (this.isBotting) 
+			if (this.isBotting)
 			{
-				for (var s in Game.world.actions.active) 
+				for (var s in Game.world.actions.active)
 				{
 					Game.world.actions.active[s].range = "20000";
 				}
@@ -204,10 +211,10 @@
 				return false;
 			}
 		}
-		
+
 		private function KillMonster(e:TimerEvent):void
 		{
-			if (!IsLoggedIn()) 
+			if (!IsLoggedIn())
 			{
 				botTimer.removeEventListener(TimerEvent.TIMER, kill);
 				botTimer.stop();
@@ -216,25 +223,26 @@
 				return;
 			}
 			this.skillDelay++;
-			if (this.skillDelay == 2) //200ms
+			if (this.skillDelay == 2) // 200ms
 			{
-				if (Game.world.myAvatar.target == null) 
+				if (Game.world.myAvatar.target == null)
 				{
-					//random monster
+					// random monster
 					Game.world.setTarget(GetMonsterByName("*"));
 				}
 				UseSkill(skillIndex.toString());
 				skillIndex++;
-				if (skillIndex > 4) skillIndex = 0;
+				if (skillIndex > 4)
+					skillIndex = 0;
 				this.skillDelay = 0;
 			}
 		}
-		
+
 		private function GetMonsterByName(name:String):Object
 		{
 			for each (var mon:Object in Game.world.getMonstersByCell(Game.world.strFrame))
 			{
-				if (mon.pMC) 
+				if (mon.pMC)
 				{
 					var monster:String = mon.pMC.pname.ti.text.toLowerCase();
 					if (((monster.indexOf(name.toLowerCase()) > -1) || (name == "*")) && mon.dataLeaf.intState > 0)
@@ -245,11 +253,12 @@
 			}
 			return null;
 		}
-		
-		private function UseSkill(index:String) : Boolean
-		{	
-			if (Game.world.myAvatar.dataLeaf.intHP == 0) return false;
-			
+
+		private function UseSkill(index:String):Boolean
+		{
+			if (Game.world.myAvatar.dataLeaf.intHP == 0)
+				return false;
+
 			var myHP:int = Game.world.myAvatar.dataLeaf.intHP / Game.world.myAvatar.dataLeaf.intHPMax * 100;
 			switch (Game.world.myAvatar.objData.strClassName)
 			{
@@ -266,7 +275,7 @@
 						return false;
 					break;
 			}
-			
+
 			var skill:Object = Game.world.actions.active[parseInt(index)];
 			if (Game.world.myAvatar.target == Game.world.myAvatar)
 			{
@@ -290,8 +299,8 @@
 			}
 			return false;
 		}
-		
-		private function IsSkillReady(param1) : int
+
+		private function IsSkillReady(param1):int
 		{
 			var _loc_4:* = NaN;
 			var _loc_2:* = new Date().getTime();
